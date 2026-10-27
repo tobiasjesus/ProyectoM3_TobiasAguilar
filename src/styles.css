@@ -1,0 +1,245 @@
+/* =====================================================
+   1. TOKENS DE DISEÑO (variables CSS)
+   Todos los colores salen de acá. El modo oscuro solo
+   redefine estas variables: el resto del CSS no cambia.
+   ===================================================== */
+:root {
+  --color-bg: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #0f172a;
+  --color-text-muted: #475569;
+  --color-border: #e2e8f0;
+  --color-primary: #c2410c;         /* naranja, como el traje de Goku */
+  --color-primary-hover: #9a3412;
+  --color-on-primary: #ffffff;
+  --color-accent: #1d4ed8;          /* azul */
+  --color-focus: #2563eb;
+  --color-bubble-user: #c2410c;
+  --color-on-bubble-user: #ffffff;
+  --color-bubble-character: #e0e7ff;
+  --color-on-bubble-character: #0f172a;
+  --color-error-bg: #fef2f2;
+  --color-error-text: #b91c1c;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --max-width: 64rem;
+  --tap-size: 2.75rem;              /* 44px: tamaño mínimo táctil */
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #0b1120;
+  --color-surface: #111827;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-border: #1f2937;
+  --color-primary: #fb923c;
+  --color-primary-hover: #fdba74;
+  --color-on-primary: #1c1917;
+  --color-accent: #60a5fa;
+  --color-focus: #93c5fd;
+  --color-bubble-user: #fb923c;
+  --color-on-bubble-user: #1c1917;
+  --color-bubble-character: #1e293b;
+  --color-on-bubble-character: #f1f5f9;
+  --color-error-bg: #450a0a;
+  --color-error-text: #fecaca;
+
+  color-scheme: dark;
+}
+
+/* =====================================================
+   2. BASE
+   ===================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* =====================================================
+   3. LAYOUT GENERAL (mobile-first: base = 320px)
+   header y footer ocupan lo que necesitan; main toma el
+   resto y scrollea por dentro (patrón flex column + flex: 1)
+   ===================================================== */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;    /* respaldo para navegadores sin dvh */
+  height: 100dvh;   /* altura visible real en móviles */
+}
+
+.site-main {
+  flex: 1;
+  min-height: 0;    /* permite que el flex item se achique y scrollee */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.brand {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+/* En mobile la navegación baja a su propia fila */
+.site-nav {
+  order: 3;
+  width: 100%;
+}
+
+.site-nav__list {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-size);
+  padding: 0 var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.site-nav__link:hover {
+  background-color: var(--color-bg);
+}
+
+/* Link de la vista actual (el router pondrá aria-current="page") */
+.site-nav__link[aria-current="page"] {
+  color: var(--color-primary);
+  box-shadow: inset 0 -3px 0 var(--color-primary);
+}
+
+.theme-toggle {
+  min-width: var(--tap-size);
+  min-height: var(--tap-size);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+/* ---------- Skip link: visible solo al recibir foco ---------- */
+.skip-link {
+  position: absolute;
+  top: -4rem;
+  left: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.skip-link:focus {
+  top: var(--space-sm);
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  padding: var(--space-sm) var(--space-md);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* =====================================================
+   4. TABLET (768px en adelante): solo lo que cambia
+   ===================================================== */
+@media (min-width: 768px) {
+  .site-header {
+    flex-wrap: nowrap;
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .site-nav {
+    order: 0;
+    width: auto;
+    margin-left: auto;
+  }
+
+  .site-nav__list {
+    gap: var(--space-sm);
+  }
+
+  .site-nav__link {
+    padding: 0 var(--space-md);
+    font-size: 1rem;
+  }
+}
+
+/* =====================================================
+   5. DESKTOP (1024px en adelante): solo lo que cambia
+   ===================================================== */
+@media (min-width: 1024px) {
+  .site-header {
+    padding: var(--space-md) var(--space-xl);
+  }
+
+  .brand {
+    font-size: 1.25rem;
+  }
+}
