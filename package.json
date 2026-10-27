@@ -1,0 +1,24 @@
+{
+  "name": "chatea-con-tu-personaje",
+  "version": "1.0.0",
+  "description": "SPA para chatear con personajes de Dragon Ball usando Gemini y Vercel Functions",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tobiasjesus/ProyectoM3_TobiasAguilar.git"
+  },
+  "keywords": [],
+  "author": "Tobias Aguilar",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/tobiasjesus/ProyectoM3_TobiasAguilar/issues"
+  },
+  "homepage": "https://github.com/tobiasjesus/ProyectoM3_TobiasAguilar#readme",
+  "devDependencies": {
+    "vitest": "^5.0.5"
+  }
+}
