@@ -115,6 +115,170 @@ a {
   flex-direction: column;
 }
 
+/* Sin contorno al recibir foco por navegación (es un área grande, no un control) */
+.site-main:focus {
+  outline: none;
+}
+
+/* Contenedor de cada vista: ancho completo en mobile, centrado y limitado en desktop */
+.view {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+}
+
+.view h1 {
+  margin-bottom: var(--space-md);
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.view p + p {
+  margin-top: var(--space-sm);
+}
+
+.view__intro {
+  margin-bottom: var(--space-lg);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Botones ---------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-size);
+  padding: var(--space-sm) var(--space-lg);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button--primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.button--primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.button--secondary {
+  border-color: var(--color-primary);
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+.button--secondary:hover {
+  background-color: var(--color-surface);
+}
+
+/* ---------- Marco de imagen de personaje ----------
+   Fondo blanco FIJO (no usa variables): las imágenes de Goku y Vegeta
+   tienen fondo blanco, así se ven iguales en modo claro y oscuro. */
+.character-frame {
+  aspect-ratio: 3 / 4;
+  padding: var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: #ffffff;
+}
+
+.character-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ---------- Home: hero ---------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.hero__image {
+  width: 100%;
+  max-width: 14rem;
+  margin: 0 auto;
+}
+
+.hero__eyebrow {
+  margin-bottom: var(--space-xs);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.hero__lead {
+  color: var(--color-text-muted);
+}
+
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+}
+
+/* ---------- Galería de personajes ---------- */
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  padding: 0;
+  list-style: none;
+}
+
+.character-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+}
+
+.character-card .character-frame {
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: 0;
+}
+
+.character-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+}
+
+.character-card__body h2 {
+  font-size: 1.25rem;
+}
+
+.character-card__body p + p {
+  margin-top: 0;   /* el espacio ya lo da el gap */
+}
+
+.character-card__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.character-card__body .button {
+  margin-top: auto;  /* empuja el botón al fondo: todas las tarjetas alineadas */
+}
+
 /* ---------- Header ---------- */
 .site-header {
   display: flex;
@@ -229,6 +393,35 @@ a {
     padding: 0 var(--space-md);
     font-size: 1rem;
   }
+
+  .view {
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .view h1 {
+    font-size: 2rem;
+  }
+
+  .hero {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  .hero__image {
+    flex: 0 0 16rem;
+    max-width: none;
+    margin: 0;
+  }
+
+  .hero__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* =====================================================
@@ -241,5 +434,17 @@ a {
 
   .brand {
     font-size: 1.25rem;
+  }
+
+  .view {
+    padding: var(--space-xl);
+  }
+
+  .hero__image {
+    flex-basis: 20rem;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
