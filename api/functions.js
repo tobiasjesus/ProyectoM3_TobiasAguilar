@@ -2,7 +2,7 @@
 // La API key vive solo en process.env (servidor): nunca llega al navegador.
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getSystemPrompt } from '../lib/characterPrompts.js';
-import { toGeminiContents, validateChatRequest } from '../lib/chatRequest.js';
+import { repairEncoding, toGeminiContents, validateChatRequest } from '../lib/chatRequest.js';
 
 // gemini-2.5-flash (recomendado por el curso) ya no está disponible en AI Studio:
 // se usa el Flash económico vigente. Ver README.
@@ -48,7 +48,8 @@ export default async function handler(req, res) {
     });
 
     const result = await model.generateContent({ contents: toGeminiContents(messages) });
-    const reply = result.response.text().trim();
+    // repairEncoding: corrige tildes "rotas" que el modelo devuelve muy de vez en cuando
+    const reply = repairEncoding(result.response.text()).trim();
 
     if (!reply) {
       return res.status(502).json({ error: 'El personaje no generó una respuesta' });

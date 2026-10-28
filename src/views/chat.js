@@ -39,7 +39,14 @@ export function renderChat(container) {
         <div class="chat__info">
           <h1 id="chat-title" class="chat__name">${character.name}</h1>
           <p class="chat__subtitle">${character.title}</p>
-          <span class="history-badge" hidden><span aria-hidden="true">💾</span> Historial guardado</span>
+          <span class="history-badge" hidden>
+            <svg class="history-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <path d="M17 21v-8H7v8M7 3v5h8"/>
+            </svg>
+            Historial guardado
+          </span>
         </div>
         <div class="chat__actions">
           <a class="button button--secondary button--small" href="/personajes" aria-label="Cambiar personaje">Cambiar</a>

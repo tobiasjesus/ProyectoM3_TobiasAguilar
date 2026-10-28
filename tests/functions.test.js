@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { toGeminiContents, validateChatRequest } from '../lib/chatRequest.js';
+import { repairEncoding, toGeminiContents, validateChatRequest } from '../lib/chatRequest.js';
 import { getSystemPrompt } from '../lib/characterPrompts.js';
 import { characters } from '../src/characters.js';
 
@@ -34,6 +34,17 @@ describe('toGeminiContents', () => {
       { role: 'user', parts: [{ text: 'Hola' }] },
       { role: 'model', parts: [{ text: '¡Hola!' }] },
     ]);
+  });
+});
+
+describe('repairEncoding', () => {
+  it('corrige tildes mal codificadas en la respuesta', () => {
+    expect(repairEncoding('¡DespuÃ©s recuperamos energÃ­as!')).toBe('¡Después recuperamos energías!');
+  });
+
+  it('deja intacto el texto que ya está bien', () => {
+    const text = '¿Qué tal? Muchísimo, ¡vamos a entrenar! Ñandú, pingüino.';
+    expect(repairEncoding(text)).toBe(text);
   });
 });
 
