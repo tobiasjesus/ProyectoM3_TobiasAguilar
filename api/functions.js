@@ -11,6 +11,8 @@ const MODEL = 'gemini-3.5-flash-lite';
 const GENERATION_CONFIG = {
   temperature: 0.8,       // algo de creatividad para que suene a personaje, sin desbordarse
   maxOutputTokens: 1024,  // margen amplio; la brevedad la controla el system prompt
+  // Razonamiento interno mínimo: para respuestas cortas de chat no hace falta y reduce mucho la demora
+  thinkingConfig: { thinkingLevel: 'minimal' },
 };
 
 export default async function handler(req, res) {
@@ -63,6 +65,10 @@ export default async function handler(req, res) {
     // Límite de uso de Gemini (rate limit / cuota): se lo informamos al frontend como 429
     if (error.status === 429) {
       return res.status(429).json({ error: 'Demasiadas solicitudes, esperá unos segundos' });
+    }
+    // Gemini saturado temporalmente ("high demand")
+    if (error.status === 503) {
+      return res.status(503).json({ error: 'El servicio de IA está con mucha demanda' });
     }
     return res.status(500).json({ error: 'Error al generar la respuesta' });
   }

@@ -90,6 +90,9 @@ export function getErrorMessage(error) {
   if (error?.status === 429) {
     return 'Enviaste muchos mensajes seguidos. Esperá unos segundos y volvé a intentar.';
   }
+  if (error?.status === 503) {
+    return 'El personaje está muy ocupado ahora (alta demanda del servicio de IA). Probá de nuevo en unos segundos.';
+  }
   if (error?.status >= 500) {
     return 'El personaje no pudo responder por un problema del servidor. Intentá de nuevo en un momento.';
   }

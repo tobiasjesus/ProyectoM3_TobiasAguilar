@@ -114,7 +114,7 @@ npm test             # corre todos los tests una vez
 npm run test:watch   # modo watch, mientras se desarrolla
 ```
 
-Hay **32 tests** en 4 archivos, todos pasando:
+Hay **35 tests** en 4 archivos, todos pasando:
 
 | Archivo | Qué cubre |
 |---|---|
@@ -140,6 +140,8 @@ Hay **32 tests** en 4 archivos, todos pasando:
 - **Modelo `gemini-3.5-flash-lite` en lugar de `gemini-2.5-flash`:** el curso recomendaba `gemini-2.5-flash`, pero al 27/10/2026 ese modelo ya no figuraba en Google AI Studio. Se eligió el modelo Flash económico y rápido vigente, disponible sin plan pago. El nombre del modelo está en una sola constante de `api/functions.js`.
 - **System prompts en el servidor:** el navegador solo envía el id del personaje (`goku`, `vegeta`, `trunks`). Así nadie puede modificar la personalidad ni usar la key para otros fines. Además, la función valida el body y rechaza roles distintos de `user`/`model`.
 - **Historial recortado:** se envían los últimos 20 mensajes para mantener el contexto sin disparar el consumo de tokens.
+- **Parámetros de generación:** `temperature: 0.8` (respuestas con personalidad, sin desbordarse), `maxOutputTokens: 1024` (margen amplio; la brevedad la controla el system prompt) y razonamiento interno mínimo (`thinkingLevel: 'minimal'`), porque para respuestas cortas de chat no hace falta.
+- **Errores y límites de uso:** el botón Enviar se bloquea mientras hay una respuesta pendiente (no hay envíos dobles). Si Gemini responde 429 (límite de uso) o 503 (alta demanda), la función lo informa con ese status y el chat muestra un mensaje claro con el botón Reintentar.
 - **`vercel.json`:** `outputDirectory: "src"` publica solo la carpeta `src/` (no quedan expuestos `package.json` ni los tests), y el *rewrite* sirve `index.html` en cualquier ruta que no sea `/api/...`, para que recargar `/chat` funcione.
 - **Seguridad en el render:** los textos del usuario y de la IA se insertan con `textContent`, nunca con `innerHTML`, para evitar inyección de HTML (XSS).
 - **Accesibilidad:** HTML semántico, skip link, foco visible, `aria-current` en la navegación, `role="log"` en el chat, `role="alert"` en los errores, controles de 44px y animación desactivada con `prefers-reduced-motion`.

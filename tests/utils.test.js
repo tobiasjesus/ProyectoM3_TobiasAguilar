@@ -113,6 +113,10 @@ describe('getErrorMessage', () => {
     expect(getErrorMessage({ status: 500 })).toContain('problema del servidor');
   });
 
+  it('traduce el 503 (IA saturada) a un mensaje de alta demanda', () => {
+    expect(getErrorMessage({ status: 503 })).toContain('alta demanda');
+  });
+
   it('sin status (fallo de red) indica problema de conexión', () => {
     expect(getErrorMessage(new TypeError('Failed to fetch'))).toContain('conectar');
   });
