@@ -1,5 +1,9 @@
 // Punto de entrada de la aplicación
 import { router, setupLinkInterception } from './router.js';
+import { setupThemeToggle } from './theme.js';
+
+// 0. Tema claro/oscuro (preferencia guardada o la del sistema)
+setupThemeToggle();
 
 // 1. Atrás/adelante del navegador → volver a dibujar según la URL
 window.addEventListener('popstate', router);

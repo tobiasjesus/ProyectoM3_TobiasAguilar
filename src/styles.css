@@ -69,7 +69,8 @@ h1,
 h2,
 h3,
 p,
-ul {
+ul,
+ol {
   margin: 0;
 }
 
@@ -93,6 +94,16 @@ a {
 :focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+/* Oculta visualmente pero lo siguen leyendo los lectores de pantalla */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* =====================================================
@@ -176,6 +187,16 @@ a {
 
 .button--secondary:hover {
   background-color: var(--color-surface);
+}
+
+.button--small {
+  padding: var(--space-xs) var(--space-md);
+  font-size: 0.875rem;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* ---------- Marco de imagen de personaje ----------
@@ -277,6 +298,279 @@ a {
 
 .character-card__body .button {
   margin-top: auto;  /* empuja el botón al fondo: todas las tarjetas alineadas */
+}
+
+/* ---------- Chat ----------
+   Mismo patrón que el layout general: columna flex donde solo
+   el área de mensajes crece (flex: 1) y scrollea por dentro. */
+.chat {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--max-width);
+  min-height: 0;
+  margin: 0 auto;
+}
+
+.chat__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.chat__avatar {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.chat__avatar img {
+  object-fit: cover;
+  object-position: top;   /* muestra la cara, no el cuerpo entero */
+}
+
+.chat__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.chat__name {
+  font-size: 1.125rem;
+  line-height: 1.2;
+}
+
+.chat__subtitle {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.chat__actions {
+  display: flex;
+  gap: var(--space-sm);
+  width: 100%;              /* en mobile, las acciones van en su propia fila */
+}
+
+.chat__actions .button {
+  flex: 1;                  /* en mobile, los dos botones se reparten la fila */
+  padding-inline: var(--space-sm);
+}
+
+.history-badge {
+  display: inline-block;
+  margin-top: var(--space-xs);
+  padding: 0.125rem var(--space-sm);
+  border-radius: 999px;
+  background-color: var(--color-bubble-character);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-on-bubble-character);
+}
+
+.history-badge[hidden] {
+  display: none;
+}
+
+.chat__messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;  /* evita que el scroll "arrastre" la página en mobile */
+  padding: var(--space-md);
+}
+
+.chat__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: 0;
+  list-style: none;
+}
+
+/* Burbujas: personaje a la izquierda, usuario a la derecha */
+.message {
+  max-width: 85%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  overflow-wrap: anywhere;   /* palabras muy largas no rompen el layout */
+}
+
+.message--user {
+  align-self: flex-end;
+  border-bottom-right-radius: var(--space-xs);
+  background-color: var(--color-bubble-user);
+  color: var(--color-on-bubble-user);
+}
+
+.message--character {
+  align-self: flex-start;
+  border-bottom-left-radius: var(--space-xs);
+  background-color: var(--color-bubble-character);
+  color: var(--color-on-bubble-character);
+}
+
+.message__author {
+  margin-bottom: 0.125rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.message__text {
+  white-space: pre-wrap;     /* respeta los saltos de línea de la respuesta */
+}
+
+.message__meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-xs);
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+.message__copy {
+  min-height: 2rem;
+  padding: 0 var(--space-sm);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Indicador "escribiendo…" animado */
+.message--typing {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+}
+
+.typing {
+  display: inline-flex;
+  gap: var(--space-xs);
+}
+
+.typing__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: currentColor;
+  animation: typing-bounce 1.2s infinite ease-in-out;
+}
+
+.typing__dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing__dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes typing-bounce {
+  0%, 80%, 100% {
+    opacity: 0.4;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-0.3rem);
+  }
+}
+
+/* Accesibilidad: sin animación si la persona lo pidió en su sistema */
+@media (prefers-reduced-motion: reduce) {
+  .typing__dot {
+    animation: none;
+  }
+}
+
+/* Estado vacío: todavía no hay mensajes */
+.chat__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  max-width: 25rem;
+  margin: var(--space-lg) auto;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+.chat__empty h2 {
+  font-size: 1.25rem;
+  color: var(--color-text);
+}
+
+.chat__empty-avatar {
+  width: 6rem;
+  height: 6rem;
+  padding: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.chat__empty-avatar img {
+  object-fit: cover;
+  object-position: top;
+}
+
+.chat__greeting {
+  font-style: italic;
+}
+
+/* Estado de error: claro, con contraste y acción para reintentar */
+.chat__error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-md);
+  background-color: var(--color-error-bg);
+  color: var(--color-error-text);
+}
+
+.chat__error .button {
+  border-color: currentColor;
+  color: inherit;
+}
+
+/* Barra para escribir: siempre visible abajo */
+.chat__composer {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.chat__input {
+  flex: 1;
+  min-width: 0;              /* sin esto el input desborda en pantallas chicas */
+  min-height: var(--tap-size);
+  padding: 0 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg);
+  font: inherit;
+  font-size: 1rem;           /* 16px: evita el zoom automático en iOS */
+  color: var(--color-text);
+}
+
+.chat__composer .button {
+  white-space: nowrap;
 }
 
 /* ---------- Header ---------- */
@@ -422,6 +716,32 @@ a {
   .gallery {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .chat__header {
+    flex-wrap: nowrap;
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .chat__actions {
+    width: auto;
+  }
+
+  .chat__actions .button {
+    flex: none;
+    padding-inline: var(--space-md);
+  }
+
+  .chat__messages {
+    padding: var(--space-lg);
+  }
+
+  .message {
+    max-width: 75%;
+  }
+
+  .chat__composer {
+    padding: var(--space-md) var(--space-lg);
+  }
 }
 
 /* =====================================================
@@ -446,5 +766,14 @@ a {
 
   .gallery {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .chat {
+    border-right: 1px solid var(--color-border);
+    border-left: 1px solid var(--color-border);
+  }
+
+  .message {
+    max-width: 60%;
   }
 }
